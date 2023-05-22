@@ -36,8 +36,10 @@ def web_osint(URL):
   print("Registrant: ", analisys.registrant)
   return analisys
 
+# initialized variable for the loop
 site_name = ""
 
+# loop to reiterate the menu
 while site_name != "exit":
 # Just an ascii art :)
   ascii_art = """
