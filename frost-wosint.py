@@ -36,37 +36,44 @@ def web_osint(URL):
   print("Registrant: ", analisys.registrant)
   return analisys
 
+site_name = ""
+
+while site_name != "exit":
 # Just an ascii art :)
-ascii_art = """
-  █████▒██▀███   ▒█████    ██████ ▄▄▄█████▓ █     █░ ▒█████    ██████  ██▓ ███▄    █ ▄▄▄█████▓
-▓██   ▒▓██ ▒ ██▒▒██▒  ██▒▒██    ▒ ▓  ██▒ ▓▒▓█░ █ ░█░▒██▒  ██▒▒██    ▒ ▓██▒ ██ ▀█   █ ▓  ██▒ ▓▒
-▒████ ░▓██ ░▄█ ▒▒██░  ██▒░ ▓██▄   ▒ ▓██░ ▒░▒█░ █ ░█ ▒██░  ██▒░ ▓██▄   ▒██▒▓██  ▀█ ██▒▒ ▓██░ ▒░
-░▓█▒  ░▒██▀▀█▄  ▒██   ██░  ▒   ██▒░ ▓██▓ ░ ░█░ █ ░█ ▒██   ██░  ▒   ██▒░██░▓██▒  ▐▌██▒░ ▓██▓ ░ 
-░▒█░   ░██▓ ▒██▒░ ████▓▒░▒██████▒▒  ▒██▒ ░ ░░██▒██▓ ░ ████▓▒░▒██████▒▒░██░▒██░   ▓██░  ▒██▒ ░ 
- ▒ ░   ░ ▒▓ ░▒▓░░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░  ▒ ░░   ░ ▓░▒ ▒  ░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░▓  ░ ▒░   ▒ ▒   ▒ ░░   
- ░       ░▒ ░ ▒░  ░ ▒ ▒░ ░ ░▒  ░ ░    ░      ▒ ░ ░    ░ ▒ ▒░ ░ ░▒  ░ ░ ▒ ░░ ░░   ░ ▒░    ░    
- ░ ░     ░░   ░ ░ ░ ░ ▒  ░  ░  ░    ░        ░   ░  ░ ░ ░ ▒  ░  ░  ░   ▒ ░   ░   ░ ░   ░      
-          ░         ░ ░        ░               ░        ░ ░        ░   ░           ░                                                                                                      
-"""
-print(ascii_art)
-# Asking for the URL
-site_name = input("Inesert the URL/IP to analize: ")
-# Using site_ping_test to verify if the site is still up
-response = site_ping_test(site_name)
-if response:
-  print(f"Site {site_name} is reachable!")
-  if compressed_dilemma(site_name):
-    print("The URL is compressed.")
-    print("Expanding...")
-    expanded_site = expand_URL(site_name)
-    if site_ping_test(expanded_site):
-      print("Expanded correctly!")
-      analisys = web_osint(expanded_site)
-    else:
-      print("Could't expand!")
-      exit()
+  ascii_art = """
+    █████▒██▀███   ▒█████    ██████ ▄▄▄█████▓ █     █░ ▒█████    ██████  ██▓ ███▄    █ ▄▄▄█████▓
+  ▓██   ▒▓██ ▒ ██▒▒██▒  ██▒▒██    ▒ ▓  ██▒ ▓▒▓█░ █ ░█░▒██▒  ██▒▒██    ▒ ▓██▒ ██ ▀█   █ ▓  ██▒ ▓▒
+  ▒████ ░▓██ ░▄█ ▒▒██░  ██▒░ ▓██▄   ▒ ▓██░ ▒░▒█░ █ ░█ ▒██░  ██▒░ ▓██▄   ▒██▒▓██  ▀█ ██▒▒ ▓██░ ▒░
+  ░▓█▒  ░▒██▀▀█▄  ▒██   ██░  ▒   ██▒░ ▓██▓ ░ ░█░ █ ░█ ▒██   ██░  ▒   ██▒░██░▓██▒  ▐▌██▒░ ▓██▓ ░ 
+  ░▒█░   ░██▓ ▒██▒░ ████▓▒░▒██████▒▒  ▒██▒ ░ ░░██▒██▓ ░ ████▓▒░▒██████▒▒░██░▒██░   ▓██░  ▒██▒ ░ 
+   ▒ ░   ░ ▒▓ ░▒▓░░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░  ▒ ░░   ░ ▓░▒ ▒  ░ ▒░▒░▒░ ▒ ▒▓▒ ▒ ░░▓  ░ ▒░   ▒ ▒   ▒ ░░   
+   ░       ░▒ ░ ▒░  ░ ▒ ▒░ ░ ░▒  ░ ░    ░      ▒ ░ ░    ░ ▒ ▒░ ░ ░▒  ░ ░ ▒ ░░ ░░   ░ ▒░    ░    
+   ░ ░     ░░   ░ ░ ░ ░ ▒  ░  ░  ░    ░        ░   ░  ░ ░ ░ ▒  ░  ░  ░   ▒ ░   ░   ░ ░   ░      
+            ░         ░ ░        ░               ░        ░ ░        ░   ░           ░                                                                                                      
+  """
+  print(ascii_art)
+  # Asking for the URL
+  site_name = input("Inesert the URL/IP to analize or type exit to quit (URL/exit): ")
+  # Using site_ping_test to verify if the site is still up
+  response = site_ping_test(site_name)
+  if site_name == "exit":
+    print("Bye! :)")
+    exit()
   else:
-    print("The URL is not compressed.")
-    analisys = web_osint(site_name)
-else:
-  print(f"Site {site_name} is unreachable! (maybe you misstyped the URL)")
+    if response:
+      print(f"Site {site_name} is reachable!")
+      if compressed_dilemma(site_name):
+        print("The URL is compressed.")
+        print("Expanding...")
+        expanded_site = expand_URL(site_name)
+        if site_ping_test(expanded_site):
+          print("Expanded correctly!")
+          analisys = web_osint(expanded_site)
+        else:
+          print("Could't expand!")
+          exit()
+      else:
+        print("The URL is not compressed.")
+        analisys = web_osint(site_name)
+    else:
+      print(f"Site {site_name} is unreachable! (maybe you misstyped the URL)")
