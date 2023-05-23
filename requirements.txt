@@ -1,2 +1,3 @@
 pyshorteners
 python-whois
+mysql-connector-python

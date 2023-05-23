@@ -1,6 +1,17 @@
 import os
 import pyshorteners
 import whois
+import tkinter
+from tkinter import ttk
+import mysql.connector
+import configparser
+
+#library to import configurations from  the file db.conf
+config = configparser.ConfigParser()
+config.read('db.conf')
+HOST = config.get('default', 'HOST')
+USER = config.get('default', 'USER')
+PASSWORD = config.get('default', 'PASSWORD')
 
 # I use curl to test if the site is up and i direct the output to null just for more cleansiness
 def site_ping_test(URL):
@@ -27,7 +38,7 @@ def expand_URL(URL):
 def web_osint(URL):
   analisys = whois.whois(URL)
   print("Domain name: ", analisys.domain_name)
-  print("Creation name: ", analisys.creation_date)
+  print("Creation date: ", analisys.creation_date)
   print("Registrar: ", analisys.registrar)
   print("Expiration date: ", analisys.expiration_date)
   print("Name server: ", analisys.name_servers)
@@ -36,8 +47,21 @@ def web_osint(URL):
   print("Registrant: ", analisys.registrant)
   return analisys
 
+def dinamic_values(analisys):
+  values = (analisys.domain_name, analisys.creation_date, analisys.registrar, analisys.expiration_date, analisys.name_servers, analisys.emails, analisys.country, analisys.registrant)
+  db.cursor.executemany(insert_statement, values)
+  return 
+
 # initialized variable for the loop
 site_name = ""
+
+# Database
+db_name = "frost-db"
+db = mysql.connector.connect(host = HOST, user = USER, password = PASSWORD)
+cursor = db.cursor()
+cursor.execute(f"IF NOT EXIST DB_ID({db_name}) CREATE DATABASE {db_name}")
+cursor.execute(f"CREATE TABLE frost (INSERT INTO frost (ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, Domain VARCHAR(255), Creation_date VARCHAR(255), Registrar VARCHAR(255), Expiration_date VARCHAR(255), Name_server VARCHAR(255), Mail_registered VARCHAR(255), Country VARCHAR(255), Registrant VARCHAR(255))")
+insert_statement = "INSERT INTO frost (Domain, Creation_date, Registrar, Expiration_date, Name_server, Mail_registered, Country, Registrant) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
 # Just an ascii art :)
 ascii_art = """
@@ -72,6 +96,7 @@ while site_name != "exit":
         if site_ping_test(expanded_site):
           print("Expanded correctly!")
           analisys = web_osint(expanded_site)
+          dinamic_values(analisys)
           print()
         else:
           print("Could't expand!")
@@ -79,6 +104,7 @@ while site_name != "exit":
       else:
         print("The URL is not compressed.")
         analisys = web_osint(site_name)
+        cursor.execute(f"CREATE DATABASE {db_name}")
         print()
     else:
       print(f"Site {site_name} is unreachable! (maybe you misstyped the URL)")
