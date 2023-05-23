@@ -39,7 +39,6 @@ def web_osint(URL):
 # initialized variable for the loop
 site_name = ""
 
-# loop to reiterate the menu
 # Just an ascii art :)
 ascii_art = """
     █████▒██▀███   ▒█████    ██████ ▄▄▄█████▓ █     █░ ▒█████    ██████  ██▓ ███▄    █ ▄▄▄█████▓
