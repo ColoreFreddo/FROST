@@ -40,9 +40,8 @@ def web_osint(URL):
 site_name = ""
 
 # loop to reiterate the menu
-while site_name != "exit":
 # Just an ascii art :)
-  ascii_art = """
+ascii_art = """
     █████▒██▀███   ▒█████    ██████ ▄▄▄█████▓ █     █░ ▒█████    ██████  ██▓ ███▄    █ ▄▄▄█████▓
   ▓██   ▒▓██ ▒ ██▒▒██▒  ██▒▒██    ▒ ▓  ██▒ ▓▒▓█░ █ ░█░▒██▒  ██▒▒██    ▒ ▓██▒ ██ ▀█   █ ▓  ██▒ ▓▒
   ▒████ ░▓██ ░▄█ ▒▒██░  ██▒░ ▓██▄   ▒ ▓██░ ▒░▒█░ █ ░█ ▒██░  ██▒░ ▓██▄   ▒██▒▓██  ▀█ ██▒▒ ▓██░ ▒░
@@ -53,7 +52,9 @@ while site_name != "exit":
    ░ ░     ░░   ░ ░ ░ ░ ▒  ░  ░  ░    ░        ░   ░  ░ ░ ░ ▒  ░  ░  ░   ▒ ░   ░   ░ ░   ░      
             ░         ░ ░        ░               ░        ░ ░        ░   ░           ░                                                                                                      
   """
-  print(ascii_art)
+print(ascii_art)
+# loop to reiterate the menu
+while site_name != "exit":
   # Asking for the URL
   site_name = input("Inesert the URL/IP to analize or type exit to quit (URL/exit): ")
   # Using site_ping_test to verify if the site is still up
@@ -71,11 +72,13 @@ while site_name != "exit":
         if site_ping_test(expanded_site):
           print("Expanded correctly!")
           analisys = web_osint(expanded_site)
+          print()
         else:
           print("Could't expand!")
           exit()
       else:
         print("The URL is not compressed.")
         analisys = web_osint(site_name)
+        print()
     else:
       print(f"Site {site_name} is unreachable! (maybe you misstyped the URL)")
