@@ -37,13 +37,13 @@ def expand_URL(URL):
 # The real analisys of the web page
 def web_osint(URL):
   analisys = whois.whois(URL)
-  print("Domain name: ", analisys.domain_name)
-  print("Creation date: ", analisys.creation_date)
-  print("Registrar: ", analisys.registrar)
-  print("Expiration date: ", analisys.expiration_date)
-  print("Name server: ", analisys.name_servers)
-  print("Email registered: ", analisys.emails)
-  print("Country : ", analisys.country)
+  print("Domain name: ", analisys.domain_name[0])
+  print("Creation date: ", analisys.creation_date[0])
+  print("Registrar: ", analisys.registrar[0])
+  print("Expiration date: ", analisys.expiration_date[0])
+  print("Name server: ", analisys.name_servers[0])
+  print("Email registered: ", analisys.emails[0])
+  print("Country : ", analisys.country[0])
   print("Registrant: ", analisys.registrant)
   return analisys
 
@@ -94,7 +94,7 @@ while site_name != "exit":
         if site_ping_test(expanded_site):
           print("Expanded correctly!")
           analisys = web_osint(expanded_site)
-          values = (analisys.domain_name, analisys.creation_date, analisys.registrar, analisys.expiration_date, analisys.name_servers, analisys.emails, analisys.country, analisys.registrant)
+          values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar[0], analisys.expiration_date[0], analisys.name_servers[0], analisys.emails[0], analisys.country[0], analisys.registrant)
           db.cursor.executemany(insert_statement, values) 
           db.commit()
           print()
@@ -104,7 +104,7 @@ while site_name != "exit":
       else:
         print("The URL is not compressed.")
         analisys = web_osint(site_name) 
-        values = (analisys.domain_name, analisys.creation_date, analisys.registrar, analisys.expiration_date, analisys.name_servers, analisys.emails, analisys.country, analisys.registrant)
+        values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar[0], analisys.expiration_date[0], analisys.name_servers[0], analisys.emails[0], analisys.country[0], analisys.registrant)
         db.cursor.executemany(insert_statement, values) 
         db.commit()
         print()
