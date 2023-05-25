@@ -39,12 +39,12 @@ def web_osint(URL):
   analisys = whois.whois(URL)
   print("Domain name: ", analisys.domain_name[0])
   print("Creation date: ", analisys.creation_date[0])
-  print("Registrar: ", analisys.registrar[0])
+  print("Registrar: ", analisys.registrar)
   print("Expiration date: ", analisys.expiration_date[0])
   print("Name server: ", analisys.name_servers[0])
   print("Email registered: ", analisys.emails[0])
-  print("Country : ", analisys.country[0])
-  print("Registrant: ", analisys.registrant)
+  print("Country : ", analisys.country)
+  print("Registrant: ", analisys.registrant) #!!!!gives a nontype maybe it could be the problem
   return analisys
 
 # initialized variable for the loop
@@ -56,7 +56,7 @@ db = mysql.connector.connect(host = HOST, user = USER, password = PASSWORD)
 cursor = db.cursor()
 cursor.execute(f"CREATE DATABASE IF NOT EXISTS `{db_name}`")
 cursor.execute("USE `frost-db`")
-cursor.execute(f"CREATE TABLE IF NOT EXISTS frost (ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, Domain VARCHAR(255), Creation_date VARCHAR(255), Registrar VARCHAR(255), Expiration_date VARCHAR(255), Name_server VARCHAR(255), Mail_registered VARCHAR(255), Country VARCHAR(255), Registrant VARCHAR(255))")
+cursor.execute(f"CREATE TABLE IF NOT EXISTS frost (ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, Domain VARCHAR(255), Creation_date VARCHAR(255), Registrar VARCHAR(255), Expiration_date VARCHAR(255), Name_server VARCHAR(255), Mail_registered VARCHAR(255), Country VARCHAR(255))") #removed registrant from query due to nontype object
 insert_statement = "INSERT INTO TABLE frost (Domain, Creation_date, Registrar, Expiration_date, Name_server, Mail_registered, Country, Registrant) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
 # Just an ascii art :)
@@ -94,7 +94,7 @@ while site_name != "exit":
         if site_ping_test(expanded_site):
           print("Expanded correctly!")
           analisys = web_osint(expanded_site)
-          values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar[0], analisys.expiration_date[0], analisys.name_servers[0], analisys.emails[0], analisys.country[0], analisys.registrant)
+          values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar, analisys.expiration_date[0], analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
           db.cursor.executemany(insert_statement, values) 
           db.commit()
           print()
@@ -104,7 +104,7 @@ while site_name != "exit":
       else:
         print("The URL is not compressed.")
         analisys = web_osint(site_name) 
-        values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar[0], analisys.expiration_date[0], analisys.name_servers[0], analisys.emails[0], analisys.country[0], analisys.registrant)
+        values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar, analisys.expiration_date[0], analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
         db.cursor.executemany(insert_statement, values) 
         db.commit()
         print()
