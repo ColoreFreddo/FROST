@@ -53,24 +53,15 @@ def db_interface(window):
   search_frame.pack(pady=10)
   entry = tk.Entry(search_frame, font=("Helvetica", 14))
   entry.pack(side=tk.LEFT, padx=10)
-  search_button = tk.Button(search_frame, text="Search", command=lambda: search(entry.get(),window,scrollbar))
+  search_button = tk.Button(search_frame, text="Search", command=lambda: search(entry.get(),window,listbox))
   search_button.pack(side=tk.LEFT)
   listbox = tk.Listbox(window)
   listbox.pack(fill=tk.BOTH, expand=True)
-  listbox = tk.Listbox(window)
-  listbox.pack(fill=tk.BOTH, expand=True)
-  #added scrollbar buggy for now
-  scrollbar = scrollbar(window)
-  scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-  listbox.config(yscrollcommand=scrollbar.set)
-  scrollbar.config(command=listbox.yview)
   window.mainloop()
 
 # Create Listbox to display data
-def search(search_term, window, scrollbar):
-  listbox = tk.Listbox(window)
+def search(search_term, window,listbox):
   cursor = db.cursor()
-  listbox.delete(0, tk.END)
   query = f'''SELECT * FROM frost WHERE  
   Domain LIKE '%{search_term}%' 
   OR Creation_date LIKE '%{search_term}%' 
@@ -82,6 +73,7 @@ def search(search_term, window, scrollbar):
   OR Registrant LIKE '%{search_term}%'
   '''
   cursor.execute(query)
+  listbox.delete(0, tk.END)
   data = cursor.fetchall()
   for row in data:
       listbox.insert(tk.END, row) 
@@ -160,7 +152,8 @@ while select != "3":
     exit()
   if select == "2":
     window = tk.Tk()
-    db_interface(window);
+    db_interface(window)
+    exit("Bye! :)")
   if select == "1":
     site_name = input("Enter the URL or IP for the domain: ")
     response = site_ping_test(site_name)
@@ -173,7 +166,7 @@ while select != "3":
         if site_ping_test(expanded_site):
           print("Expanded correctly!")
           analisys = web_osint(expanded_site)
-          values = (analisys.domain_name[0], analisys.creation_date, analisys.registrar, analisys.expiration_date, analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
+          values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar, analisys.expiration_date, analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
           cursor.execute(insert_statement, values) 
           db.commit()
           print()
@@ -183,7 +176,7 @@ while select != "3":
       else:
         print("The URL is not compressed.")
         analisys = web_osint(site_name) 
-        values = (analisys.domain_name[0], analisys.creation_date, analisys.registrar, analisys.expiration_date, analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
+        values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar, analisys.expiration_date, analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
         cursor.execute(insert_statement, values)
         db.commit()
         print()
