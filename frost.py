@@ -38,7 +38,7 @@ def expand_URL(URL):
 def web_osint(URL):
   analisys = whois.whois(URL)
   print("Domain name: ", analisys.domain_name[0])
-  print("Creation date: ", analisys.creation_date[0])
+  print("Creation date: ", analisys.creation_date)
   print("Registrar: ", analisys.registrar)
   print("Expiration date: ", analisys.expiration_date[0])
   print("Name server: ", analisys.name_servers[0])
@@ -47,28 +47,25 @@ def web_osint(URL):
   print("Registrant: ", analisys.registrant)
   return analisys
 
-# functions used to implement the search query in the graphical frontend
-def fetch():
-  cursor.execute("SELECT * FROM frost")
+def search():
+  listbox = tk.Listbox(window)
+  search_term = entry.get()  # Get the search term from the entry field
+  cursor = db.cursor()
+  listbox.delete(0, tk.END)
+  query = f'''SELECT * FROM frost WHERE  
+  Domain LIKE '%{search_term}%' 
+  OR Creation_date LIKE '%{search_term}%' 
+  OR Registrar LIKE '%{search_term}%' 
+  OR Expiration_date LIKE '%{search_term}%' 
+  OR Name_server LIKE '%{search_term}%' 
+  OR Mail_registered LIKE '%{search_term}%' 
+  OR Country LIKE '%{search_term}%' 
+  OR Registrant LIKE '%{search_term}%'
+  '''
+  cursor.execute(query)
   data = cursor.fetchall()
-
-def search(stuff):
-  query = "SELECT * FROM frost WHERE"
-  columns = ["Domain", "Creation_date", "Registrar", "Expiration_date", "Name_server", "Mail_registered", "Country", "registrant"]
-  conditions = []
-  for column in columns:
-    conditions.append(f"{column} LIKE %s")
-  query += " OR ".join(conditions)
-  cursor.execute(query, tuple(f"%{stuff}%" for _ in columns))
-  data = cursor.fetchall()
-
-# visualize the database
-def display(data):
-  plt.plot(...)
-  plt.xlabel(...)
-  plt.ylabel(...)
-  plt.title(...)
-  plt.show()
+  for row in data:
+      listbox.insert(tk.END, row)
 
 # initialized variable for the loop
 site_name = ""
@@ -106,6 +103,7 @@ insert_statement = '''
   )
   VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
 '''
+
 # Just an ascii art :)
 ascii_art = """
   █████▒██▀███   ▒█████    ██████ ▄▄▄█████▓
@@ -122,16 +120,35 @@ ascii_art = """
 print(ascii_art)
 
 # window interface for the database
+#window = tk.Tk()
+#window.title("Database Viewer")
+#search_label = tk.Label(window, text = "Search:")
+#search_label.pack()
+#search_entry = tk.Entry(window)
+#search_entry.pack()
+#search_button = tk.Button(window, text = "Search", command = lambda: search(search_entry.get()))
+#search_button.pack()
+#window.mainloop()
 window = tk.Tk()
-window.title("Database Viewer")
-search_label = tk.Label(window, text = "Search:")
-search_label.pack()
-search_entry = tk.Entry(window)
-search_entry.pack()
-search_button = tk.Button(window, text = "Search", command = lambda: search(search_entry.get()))
-search_button.pack()
-fetch_button = tk.Button(window, text = "Fetch Data", command = fetch())
-fetch_button.pack()
+window.title("MySQL Database Viewer")
+# Search entry and button
+search_frame = tk.Frame(window)
+search_frame.pack(pady=10)
+
+entry = tk.Entry(search_frame, font=("Helvetica", 14))
+entry.pack(side=tk.LEFT, padx=10)
+
+search_button = tk.Button(search_frame, text="Search", command=search)
+search_button.pack(side=tk.LEFT)
+
+# Create Listbox to display data
+listbox = tk.Listbox(window)
+listbox.pack(fill=tk.BOTH, expand=True)
+
+# Close database connection
+cursor.close()
+
+# Start Tkinter event loop
 window.mainloop()
 
 # loop to reiterate the menu
@@ -155,7 +172,7 @@ while site_name != "exit":
         if site_ping_test(expanded_site):
           print("Expanded correctly!")
           analisys = web_osint(expanded_site)
-          values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar, analisys.expiration_date[0], analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
+          values = (analisys.domain_name[0], analisys.creation_date, analisys.registrar, analisys.expiration_date[0], analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
           cursor.execute(insert_statement, values) 
           db.commit()
           print()
@@ -165,7 +182,7 @@ while site_name != "exit":
       else:
         print("The URL is not compressed.")
         analisys = web_osint(site_name) 
-        values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar, analisys.expiration_date[0], analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
+        values = (analisys.domain_name[0], analisys.creation_date, analisys.registrar, analisys.expiration_date[0], analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
         cursor.execute(insert_statement, values)
         db.commit()
         print()
