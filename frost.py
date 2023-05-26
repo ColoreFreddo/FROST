@@ -4,7 +4,6 @@ import whois
 import tkinter as tk
 import mysql.connector
 import configparser
-import matplotlib.pyplot as plt
 
 #library to import configurations from  the file db.conf
 config = configparser.ConfigParser()
