@@ -49,6 +49,7 @@ def web_osint(URL):
 
 def db_interface(window):
   window.title("MySQL Database Viewer")
+  window.geometry("1000x500")
   search_frame = tk.Frame(window)
   search_frame.pack(pady=10)
   entry = tk.Entry(search_frame, font=("Helvetica", 14))
