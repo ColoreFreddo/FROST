@@ -49,19 +49,25 @@ def web_osint(URL):
 
 def db_interface(window):
   window.title("MySQL Database Viewer")
-# Search entry and button
   search_frame = tk.Frame(window)
   search_frame.pack(pady=10)
   entry = tk.Entry(search_frame, font=("Helvetica", 14))
   entry.pack(side=tk.LEFT, padx=10)
-  search_button = tk.Button(search_frame, text="Search", command=lambda: search(entry.get(),window))
+  search_button = tk.Button(search_frame, text="Search", command=lambda: search(entry.get(),window,scrollbar))
   search_button.pack(side=tk.LEFT)
   listbox = tk.Listbox(window)
   listbox.pack(fill=tk.BOTH, expand=True)
+  listbox = tk.Listbox(window)
+  listbox.pack(fill=tk.BOTH, expand=True)
+  #added scrollbar buggy for now
+  scrollbar = scrollbar(window)
+  scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+  listbox.config(yscrollcommand=scrollbar.set)
+  scrollbar.config(command=listbox.yview)
   window.mainloop()
 
 # Create Listbox to display data
-def search(search_term, window):
+def search(search_term, window, scrollbar):
   listbox = tk.Listbox(window)
   cursor = db.cursor()
   listbox.delete(0, tk.END)
