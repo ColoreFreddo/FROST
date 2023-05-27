@@ -1,3 +1,4 @@
 python-whois
 mysql-connector-python
 configparser
+requests
