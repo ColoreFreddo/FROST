@@ -29,9 +29,16 @@ def compressed_dilemma(URL):
     return True
   
 # I need this to expanded a shortened URL using pyshortener
-def expand_URL(URL):
-  expanded = pyshorteners.expand_URL(URL)
-  return expanded 
+def expand_URL(short_url):
+      if short_url is not None:
+        try:
+          short = pyshorteners.Shortener()
+          expanded_url = short.expand(short_url)
+          return expanded_url
+        except Exception:
+          return None
+      else:
+        return None
 
 # Check if is a list or a string
 def get_value(analisys):
@@ -166,6 +173,7 @@ while select != "3":
     site_name = input("Enter the URL or IP for the domain: ")
     response = site_ping_test(site_name)
     if response:
+      print()
       print(f"Site {site_name} is reachable!")
       if compressed_dilemma(site_name):
         print("The URL is compressed.")
