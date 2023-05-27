@@ -1,5 +1,5 @@
 import os
-import pyshorteners
+import requests
 import whois
 import tkinter as tk
 import mysql.connector
@@ -30,16 +30,14 @@ def compressed_dilemma(URL):
   
 # I need this to expanded a shortened URL using pyshortener
 def expand_URL(short_url):
-      if short_url is not None and isinstance(short_url, (str, bytes)):
-        try:
-          short = pyshorteners.Shortener()
-          expanded_url = short.expand(short_url)
-          return expanded_url
-        except Exception:
-          return "None"
-      else:
-        return "None"
-
+    try:
+        response = requests.head(short_url, allow_redirects=True)
+        expanded_url = response.url
+        return expanded_url
+    except requests.exceptions.RequestException:
+        print("Error: Unable to expand the URL.")
+        return None
+    
 # Check if is a list or a string
 def get_value(analisys):
     if isinstance(analisys, list):
