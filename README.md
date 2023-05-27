@@ -1,5 +1,5 @@
 # FROST
-This application (written in Python) allow users easy domain public info lookup, store them in a database, and search them in an intuitive GUI.
+This application (written in Python) allow users easy domain public info lookup, store them in a database, and search them in an intuitive GUI. FROST is intended for didactical purposes or web analisys, not for illegal means.
 
 ## Features
 
