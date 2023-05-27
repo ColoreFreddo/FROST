@@ -30,15 +30,15 @@ def compressed_dilemma(URL):
   
 # I need this to expanded a shortened URL using pyshortener
 def expand_URL(short_url):
-      if short_url is not None:
+      if short_url is not None and isinstance(short_url, (str, bytes)):
         try:
           short = pyshorteners.Shortener()
           expanded_url = short.expand(short_url)
           return expanded_url
         except Exception:
-          return None
+          return "None"
       else:
-        return None
+        return "None"
 
 # Check if is a list or a string
 def get_value(analisys):
