@@ -33,16 +33,27 @@ def expand_URL(URL):
   expanded = pyshorteners.expand_URL(URL)
   return expanded 
 
+# Check if is a list or a string
+def get_value(analisys):
+    if isinstance(analisys, list):
+        return analisys[0]
+    elif isinstance(analisys, str):
+        return analisys
+    elif isinstance(analisys, None):
+        return "None"
+    else:
+        return "None"
+
 # The real analisys of the web page
 def web_osint(URL):
   analisys = whois.whois(URL)
-  print("Domain name: ", analisys.domain_name)
-  print("Registrar: ", analisys.registrar)
-  print("Name server: ", analisys.name_servers)
-  print("Email registered: ", analisys.emails)
-  print("Country : ", analisys.country)
-  print("Registrant: ", analisys.registrant)
-  return [analisys.domain_name, analisys.registrar, analisys.name_servers, analisys.emails, analisys.country, analisys.registrant]
+  print("Domain name: ", get_value(analisys.domain_name))
+  print("Registrar: ", get_value(analisys.registrar))
+  print("Name server: ", get_value(analisys.name_servers))
+  print("Email registered: ", get_value(analisys.emails))
+  print("Country : ", get_value(analisys.country))
+  print("Registrant: ", get_value(analisys.registrant))
+  return [get_value(analisys.domain_name), get_value(analisys.registrar), get_value(analisys.name_servers), get_value(analisys.emails[0]), get_value(analisys.country), get_value(analisys.registrant)]
 
 # This create the window
 def db_interface(window):
