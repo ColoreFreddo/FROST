@@ -37,14 +37,12 @@ def expand_URL(URL):
 def web_osint(URL):
   analisys = whois.whois(URL)
   print("Domain name: ", analisys.domain_name[0])
-  print("Creation date: ", analisys.creation_date)
   print("Registrar: ", analisys.registrar)
-  print("Expiration date: ", analisys.expiration_date)
   print("Name server: ", analisys.name_servers[0])
   print("Email registered: ", analisys.emails[0])
   print("Country : ", analisys.country)
   print("Registrant: ", analisys.registrant)
-  return analisys
+  return [analisys.domain_name[0], analisys.registrar, analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant]
 
 def db_interface(window):
   window.title("MySQL Database Viewer")
@@ -64,9 +62,7 @@ def search(search_term, window,listbox):
   cursor = db.cursor()
   query = f'''SELECT * FROM frost WHERE  
   Domain LIKE '%{search_term}%' 
-  OR Creation_date LIKE '%{search_term}%' 
   OR Registrar LIKE '%{search_term}%' 
-  OR Expiration_date LIKE '%{search_term}%' 
   OR Name_server LIKE '%{search_term}%' 
   OR Mail_registered LIKE '%{search_term}%' 
   OR Country LIKE '%{search_term}%' 
@@ -96,9 +92,7 @@ cursor.execute(f'''
   CREATE TABLE IF NOT EXISTS frost 
   (
   Domain VARCHAR(255),
-  Creation_date VARCHAR(255),
   Registrar VARCHAR(255),
-  Expiration_date VARCHAR(255),
   Name_server VARCHAR(255),
   Mail_registered VARCHAR(255),
   Country VARCHAR(255),
@@ -106,18 +100,16 @@ cursor.execute(f'''
   )
   ''')
 insert_statement = '''
-  INSERT INTO frost 
+  INSERT INTO frost IF NOT EXIST 
   (
   Domain, 
-  Creation_date,
   Registrar, 
-  Expiration_date,
   Name_server,
   Mail_registered,
   Country,
   Registrant
   )
-  VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+  VALUES (%s, %s, %s, %s, %s, %s)
 '''
 
 # Just an ascii art :)
@@ -134,8 +126,6 @@ ascii_art = """
                                            
   """
 print(ascii_art)
-
-# window for the gui database
 
 # loop to reiterate the menu
 while select != "3":
@@ -166,8 +156,7 @@ while select != "3":
         if site_ping_test(expanded_site):
           print("Expanded correctly!")
           analisys = web_osint(expanded_site)
-          values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar, analisys.expiration_date, analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
-          cursor.execute(insert_statement, values) 
+          cursor.execute(insert_statement, analisys) 
           db.commit()
           print()
         else:
@@ -176,8 +165,7 @@ while select != "3":
       else:
         print("The URL is not compressed.")
         analisys = web_osint(site_name) 
-        values = (analisys.domain_name[0], analisys.creation_date[0], analisys.registrar, analisys.expiration_date, analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant)
-        cursor.execute(insert_statement, values)
+        cursor.execute(insert_statement, analisys)
         db.commit()
         print()
     else:
