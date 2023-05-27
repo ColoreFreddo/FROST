@@ -101,7 +101,7 @@ cursor.execute(f'''
   )
   ''')
 insert_statement = '''
-  INSERT INTO frost IF NOT EXIST 
+  INSERT INTO frost 
   (
   Domain, 
   Registrar, 
@@ -135,16 +135,19 @@ while select != "3":
   print("(2) Open the database")
   print("(3) Exit")
   select = input("Select (1/2/3): ")
+  print()
   if select == "3":
     print("Bye! :)")
     cursor.close()
     db.close()
     exit()
   if select == "2":
+    print()
     window = tk.Tk()
     db_interface(window)
     exit("Bye! :)")
   if select == "1":
+    print()
     site_name = input("Enter the URL or IP for the domain: ")
     response = site_ping_test(site_name)
     if response:
@@ -152,23 +155,29 @@ while select != "3":
       if compressed_dilemma(site_name):
         print("The URL is compressed.")
         print("Expanding...")
+        print()
         expanded_site = expand_URL(site_name)
         if site_ping_test(expanded_site):
           print("Expanded correctly!")
+          print()
           analisys = web_osint(expanded_site)
           cursor.execute(insert_statement, analisys) 
           db.commit()
           print()
         else:
+          print()
           print("Could't expand!")
           exit()
       else:
+        print()
         print("The URL is not compressed.")
         analisys = web_osint(site_name) 
         cursor.execute(insert_statement, analisys)
         db.commit()
         print()
     else:
+      print()
       print(f"Site {site_name} is unreachable! (maybe you misstyped the URL)")
   else:
+    print()
     print("Error! (Invalid input)")
