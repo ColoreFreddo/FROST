@@ -44,6 +44,7 @@ def web_osint(URL):
   print("Registrant: ", analisys.registrant)
   return [analisys.domain_name[0], analisys.registrar, analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant]
 
+# This create the window
 def db_interface(window):
   window.title("MySQL Database Viewer")
   window.geometry("1000x500")
@@ -134,7 +135,6 @@ while select != "3":
   print("(2) Open the database")
   print("(3) Exit")
   select = input("Select (1/2/3): ")
-  # Using site_ping_test to verify if the site is still up
   if select == "3":
     print("Bye! :)")
     cursor.close()
