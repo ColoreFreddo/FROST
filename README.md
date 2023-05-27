@@ -13,9 +13,9 @@ This application (written in Python) allow users easy domain public info lookup,
 
 To run this tool, you need to have the following.
 
-- MacOs or Linux (Windows is not supported)
-- Python (version 3.6 or higher)
-- MySQL database server
+- MacOs or Linux (Windows is not supported).
+- Python (version 3.6 or higher).
+- MySQL database server.
 
 ## Installation
 
