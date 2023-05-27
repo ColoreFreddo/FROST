@@ -5,7 +5,7 @@ This application (written in Python) allow users easy domain public info lookup,
 
 - Perform OSINT analysis on a domain using the 'python-whois' library.
 - Verify if the website is up using 'curl'.
-- Expand shortened URL using the 'request' library (refer to the library documentation for supported shorteners).
+- Expand shortened URL using the 'requests' library (refer to the library documentation for supported shorteners).
 - Store analysys data in a MySQL database for comparason.
 - Simple GUI interface for interacting with the database.
 
