@@ -36,13 +36,13 @@ def expand_URL(URL):
 # The real analisys of the web page
 def web_osint(URL):
   analisys = whois.whois(URL)
-  print("Domain name: ", analisys.domain_name[0])
+  print("Domain name: ", analisys.domain_name)
   print("Registrar: ", analisys.registrar)
-  print("Name server: ", analisys.name_servers[0])
-  print("Email registered: ", analisys.emails[0])
+  print("Name server: ", analisys.name_servers)
+  print("Email registered: ", analisys.emails)
   print("Country : ", analisys.country)
   print("Registrant: ", analisys.registrant)
-  return [analisys.domain_name[0], analisys.registrar, analisys.name_servers[0], analisys.emails[0], analisys.country, analisys.registrant]
+  return [analisys.domain_name, analisys.registrar, analisys.name_servers, analisys.emails, analisys.country, analisys.registrant]
 
 # This create the window
 def db_interface(window):
