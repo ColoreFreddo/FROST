@@ -57,7 +57,7 @@ def web_osint(URL):
   print("Email registered: ", get_value(analisys.emails))
   print("Country : ", get_value(analisys.country))
   print("Registrant: ", get_value(analisys.registrant))
-  return [get_value(analisys.domain_name), get_value(analisys.registrar), get_value(analisys.name_servers), get_value(analisys.emails[0]), get_value(analisys.country), get_value(analisys.registrant)]
+  return [get_value(analisys.domain_name), get_value(analisys.registrar), get_value(analisys.name_servers), get_value(analisys.emails), get_value(analisys.country), get_value(analisys.registrant)]
 
 # This create the window
 def db_interface(window):
