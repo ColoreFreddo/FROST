@@ -43,11 +43,11 @@ To run this tool, you need to have the following.
 To run FROST use the following command:
 - MacOs
 ```zsh
-   python3 FROST.py
+   python3 frost.py
    ```
 - Linux
 ```bash
-   python FROST.py
+   python frost.py
    ```
 You will be greeted by this options:
 
