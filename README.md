@@ -1,4 +1,7 @@
 # FROST
+
+<img width="842" alt="Screenshot 2023-05-27 alle 19 13 06" src="https://github.com/ColoreFreddo/FROST/assets/105849444/ff60e261-125f-48f2-8fc8-1aef039a7915">
+
 This application (written in Python) allow users easy domain public info lookup, store them in a database, and search them in an intuitive GUI. FROST is intended for didactical purposes or web analisys, not for illegal means.
 
 ## Features
