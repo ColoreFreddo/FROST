@@ -36,13 +36,17 @@ def expand_URL(URL):
 # Check if is a list or a string
 def get_value(analisys):
     if isinstance(analisys, list):
+      if analisys:
         return analisys[0]
+      else:
+        return "None"
     elif isinstance(analisys, str):
+      if analisys:
         return analisys
-    elif isinstance(analisys, None):
+      else:
         return "None"
     else:
-        return "None"
+      return "None"
 
 # The real analisys of the web page
 def web_osint(URL):
