@@ -169,9 +169,10 @@ while select != "3":
     db.close()
     exit()
   if select == "2":
-    print()
     window = tk.Tk()
     db_interface(window)
+    cursor.close()
+    db.close()
     exit("Bye! :)")
   if select == "1":
     print()
