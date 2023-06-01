@@ -1,13 +1,15 @@
-import os
-import requests
-import whois
-import tkinter as tk
-import mysql.connector
-import configparser
+# used libraries 
+import os # used for the ping section
+import requests # used for expanding links
+import whois # main library used for web-osint
+import tkinter as tk # library used for the database interface
+import mysql.connector # library used for connecting the database
+import configparser # library used to import settings from a file
 
-#library to import configurations from  the file db.conf
+# library to import configurations from the file conf.ini
 config = configparser.ConfigParser()
 config.read('config.ini')
+# allocating variables to use later in the database
 HOST = config.get('default', 'HOST')
 USER = config.get('default', 'USER')
 PASSWORD = config.get('default', 'PASSWORD')
@@ -37,7 +39,7 @@ def compressed_dilemma(URL):
   else:
     return True
   
-# I need this to expanded a shortened URL using pyshortener
+# I need this to expanded a shortened URL using requests
 def expand_URL(short_url):
     try:
         response = requests.head(short_url, allow_redirects=True)
@@ -76,7 +78,7 @@ def web_osint(URL):
   print("Registrant: ", get_value(analisys.registrant))
   return [get_value(analisys.domain_name), get_value(analisys.registrar), get_value(analisys.name_servers), get_value(analisys.emails), get_value(analisys.country), get_value(analisys.registrant)]
 
-# This create the window
+# This create the database window
 def db_interface(window):
   window.title("MySQL Database Viewer")
   window.geometry("1000x500")
@@ -90,7 +92,7 @@ def db_interface(window):
   listbox.pack(fill=tk.BOTH, expand=True)
   window.mainloop()
 
-# Create Listbox to display data
+# Create Listbox to display data and request data from database
 def search(search_term, window,listbox):
   cursor = db.cursor()
   query = f'''SELECT * FROM frost WHERE  
@@ -115,7 +117,7 @@ def search(search_term, window,listbox):
 # initialized variable for the loop
 select = "0"
 
-# Database
+# Database creation
 db_name = "frostdb"
 db = mysql.connector.connect(host = HOST, user = USER, password = PASSWORD)
 cursor = db.cursor()
