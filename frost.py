@@ -1,4 +1,4 @@
-# used libraries 
+# used libraries  
 import os # used for the ping section
 import requests # used for expanding links
 import whois # main library used for web-osint
