@@ -16,9 +16,9 @@ This application (written in Python) allow users easy domain public info lookup,
 
 To run this tool, you need to have the following.
 
-- MacOs or Linux (Windows is not supported).
-- Python (version 3.6 or higher).
-- MySQL database server.
+- **MacOs or Linux** (Windows is not supported).
+- **Python** (version 3.6 or higher).
+- **MySQL** database server.
 
 ## Installation
 
@@ -29,34 +29,34 @@ To run this tool, you need to have the following.
    ```
 2. Install the requirements:
 
-- MacOs
+- **MacOs**
 ```zsh
    pip3 install -r requirements.txt
    ```
 
-- Linux
+- **Linux**
 ```bash
    pip install -r requirements.txt
    ```
-3. Configure the MySQL database connection:
+3. Configure the **MySQL** database connection:
 - Edit the 'config.ini' file and replace 'ADD_YOURS' with your server (or local) info.
 
 ## Usage
 
 To run FROST use the following command:
-- MacOs
+- **MacOs**
 ```zsh
    python3 frost.py
    ```
-- Linux
+- **Linux**
 ```bash
    python frost.py
    ```
 You will be greeted by this options:
 
-1. Domain analysis: Perform analysis on a domain by entering the URL or IP address.
-2. Open the database: Launch the GUI interface to interact with the database.
-3. Exit: Closes the application.
+1. **Domain analysis**: Perform analysis on a domain by entering the URL or IP address.
+2. **Open the database**: Launch the GUI interface to interact with the database.
+3. **Exit**: Closes the application.
 
 Follow the on-screen options to enter in the desired menu.
 
@@ -66,4 +66,4 @@ Contributions are accepted, if you find any bugs or suggestions, please open an 
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](https://mit-license.org).
