@@ -12,6 +12,15 @@ HOST = config.get('default', 'HOST')
 USER = config.get('default', 'USER')
 PASSWORD = config.get('default', 'PASSWORD')
 
+# Main menu function
+def Main_menu():
+  print("(1) Domain analisys")
+  print("(2) Open the database")
+  print("(3) Exit")
+  select = input("Select (1/2/3): ")
+  print()
+  return select
+
 # I use curl to test if the site is up and i direct the output to null just for more cleansiness
 def site_ping_test(URL):
   response = os.system("curl --head --silent --fail " + site_name + " > /dev/null")
@@ -36,7 +45,10 @@ def expand_URL(short_url):
         return expanded_url
     except requests.exceptions.RequestException:
         print("Error: Unable to expand the URL.")
-        return None
+    print("The URL is compressed.")
+    print("Expanding...")
+    print()
+    return None
     
 # Check if is a list or a string
 def get_value(analisys):
@@ -150,12 +162,7 @@ print(ascii_art)
 
 # loop to reiterate the menu
 while select != "3":
-  # Asking for the URL
-  print("(1) Domain analisys")
-  print("(2) Open the database")
-  print("(3) Exit")
-  select = input("Select (1/2/3): ")
-  print()
+  select = Main_menu()
   if select == "3":
     print("Bye! :)")
     cursor.close()
@@ -174,9 +181,6 @@ while select != "3":
       print()
       print(f"Site {site_name} is reachable!")
       if compressed_dilemma(site_name):
-        print("The URL is compressed.")
-        print("Expanding...")
-        print()
         expanded_site = expand_URL(site_name)
         if site_ping_test(expanded_site):
           print("Expanded correctly!")
